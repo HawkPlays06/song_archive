@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Lexend:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}Song Archive{% endblock %}</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg custom-navbar">
         <div class="container-fluid">
             <div class="navbar-nav">
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
-                <a class="nav-link" href="{% url 'log in' %}">Log in</a>
+                <a class="nav-link" href="{% url 'sign up' %}">Sign up</a>
             </div>
         </div>
     </nav>

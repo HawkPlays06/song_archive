@@ -1,10 +1,36 @@
 {% extends 'song_archive/base.html' %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}Sign up{% endblock %}
 
 {% block content %}
 <head>
-    <title>Log in</title>
+    <title>Sign up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/sign up.css' %}">
 </head>
-<h1>Log in</h1>
+<body>
+    <div class="signup-container">
+        <h1>Sign up</h1>
+        <div class="required-information">
+            <span class="required">*</span> indicates required fields
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="account_name">Account Name:  <span class="required">*</span> </label>
+            {{ form.account_name }}
+
+            <label for="e_mail">E-mail: <span class="required">*</span></label>
+            {{ form.e_mail }}
+            {{ form.e_mail.errors }}
+
+            <label for="DOB">Date of Birth:  <span class="required">*</span> </label>
+            {{ form.DOB }}
+            {{ form.DOB.errors }}
+
+            <button type="submit">SIGN UP</button>
+        </form>
+    </div>
+</body>
+
 {% endblock %}

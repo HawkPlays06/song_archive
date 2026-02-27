@@ -1,0 +1,17 @@
+.custom-navbar {
+    background-color: #4E3E5B;
+}
+
+.nav-link {
+    color: white;
+}
+
+body {
+    background-color: #262626;
+    font-family: "Lexend", sans-serif;
+}
+
+.required {
+    color: red;
+}
+

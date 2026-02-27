@@ -1,14 +1,28 @@
 from django import forms
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from . import models
 
 class AccountForm(forms.ModelForm):
     class Meta:
         model = models.Account
-        fields = ["account_name", "e_mail", "DOB", "account_image"]
+        fields = ["account_name", "e_mail", "DOB"]
         widgets = {
-            
+            "account_name" : forms.TextInput(attrs={"placeholder": "Username"}),
+            "e_mail" : forms.EmailInput(attrs={"placeholder": "E-mail address"}),
+            "DOB": forms.DateInput(attrs={"type": "date"}),
         }
-
+    
+    def clean_DOB(self):
+        dob = self.cleaned_data.get("DOB")
+        if dob:
+            if dob > date.today():
+                raise forms.ValidationError("That date is in the future.")
+            elif dob > date.today() - relativedelta(years=13):
+                raise forms.ValidationError("You must be at least 13 years old.")
+        
+        return dob
+"""
 class ArtistForm(forms.ModelForm):
     class Meta:
         model = models.Artist
@@ -49,3 +63,4 @@ class TrackForm(forms.ModelForm):
 
         }
 
+"""
