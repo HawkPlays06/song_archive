@@ -1,4 +1,10 @@
 from django.db import models
+import bcrypt
+
+def hash_password(password):
+    pw_bytes = password.encode("utf-8")
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(pw_bytes, salt).decode("utf-8")
 
 # Create your models here.
 class Account(models.Model):
@@ -6,6 +12,7 @@ class Account(models.Model):
     account_name = models.CharField(max_length=255, null=False)
     e_mail = models.EmailField(max_length=255, null=False, unique=True, error_messages={"unique": "Email already registered. Log in instead."})
     DOB = models.DateField(null=False)
+    password_hash = models.CharField(max_length=255, null=False, default="")
     date_of_creation = models.DateField(auto_now_add=True, null=False)
     account_image = models.ImageField(upload_to="accounts/")
 
@@ -19,7 +26,11 @@ class Account(models.Model):
             account_image = self.account_image.file
         except ValueError:
             account_image = "None"
-        return f"{self.account_ID} | {self.account_name} | {self.e_mail} | {self.DOB} | {self.date_of_creation} | {account_image}"
+        
+        # password masking
+        visible = 15
+        masked = self.password_hash[:visible] + "*" * (len(self.password_hash) - visible)
+        return f"{self.account_ID} | {self.account_name} | {self.e_mail} | {self.DOB} | {self.date_of_creation} | {account_image} | {masked}"
     
 class Artist(models.Model):
     artist_ID = models.AutoField(primary_key=True)
