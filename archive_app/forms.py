@@ -3,9 +3,11 @@ from django.contrib.auth.models import User
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.html import format_html
+from django.urls import reverse
 from . import models
 
-# place holders needed
 class Signup_form(forms.ModelForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder": "E-mail address"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder" : "Password"}), label="Password")
@@ -20,7 +22,13 @@ class Signup_form(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
         if User.objects.filter(email=email).exists():
-            raise ValidationError("Email already registered. Log in instead.")
+            login_url = reverse("log in")  # your login url name
+            raise ValidationError(
+            format_html(
+                'Email already registered. <a href="{}">Log in </a> instead.',
+                login_url
+            )
+        )
         return email
     
     def clean_DOB(self):
@@ -48,6 +56,16 @@ class Signup_form(forms.ModelForm):
                                           DOB = self.cleaned_data["DOB"]
                                           )
         return user
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "Username"})
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
+
 """
 class ArtistForm(forms.ModelForm):
     class Meta:

@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
 from . import forms
 
 # Create your views here.
@@ -19,14 +18,13 @@ def sign_up_view(request):
     context = {"form" : form}
     return render(request, "song_archive/sign up.html", context)
 
-def log_in_view(request):
+def login_view(request):
     if request.method == "POST":
-        form = AuthenticationForm(request.POST)
+        form = forms.LoginForm(request, data=request.POST)
         if form.is_valid():
-            form.save()
+            login(request, form.get_user())
             return redirect("home")
     else:
-        form = AuthenticationForm()
-    
-    context = {"form" : form}
-    return render(request, "song_archive/log in.html", context)
+        form = forms.LoginForm(request=request)
+
+    return render(request, "song_archive/log in.html", {"form": form})

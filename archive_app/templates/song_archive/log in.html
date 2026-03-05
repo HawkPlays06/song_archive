@@ -17,13 +17,13 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <label for="e_mail">E-mail: <span class="required">*</span></label>
-            {{ form.e_mail }}
-            {{ form.e_mail.errors }}
+            <label for="e_mail">Username: <span class="required">*</span></label>
+            {{ form.username }}
+            {{ form.username.errors }}
 
-            <label for="password_hash">Password:  <span class="required">*</span> </label>
-            {{ form.password_hash}}
-            {{form.password_hash.errors}}
+            <label for="password">Password:  <span class="required">*</span> </label>
+            {{ form.password }}
+            {{form.password.errors}}
 
             <button type="submit">LOG IN</button>
         </form>

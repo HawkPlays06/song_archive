@@ -19,6 +19,7 @@
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
                 <a class="nav-link" href="{% url 'sign up' %}">Sign up</a>
                 <a class="nav-link" href="{% url 'log in' %}">Log in</a>
+                <a class="nav-link" href="{% url 'home' %}">{{ user.username }}</a>
             </div>
         </div>
     </nav>
