@@ -1,7 +1,7 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.Account)
+admin.site.register(models.Profile)
 admin.site.register(models.Artist)
 admin.site.register(models.Publisher)
 admin.site.register(models.Playlist)

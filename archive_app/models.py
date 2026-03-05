@@ -1,37 +1,27 @@
 from django.db import models
+from django.contrib.auth.models import User
 import bcrypt
 
-def hash_password(password):
-    pw_bytes = password.encode("utf-8")
-    salt = bcrypt.gensalt(rounds=12)
-    return bcrypt.hashpw(pw_bytes, salt).decode("utf-8")
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
-# Create your models here.
-class Account(models.Model):
-    account_ID = models.AutoField(primary_key=True)
     account_name = models.CharField(max_length=255, null=False)
-    e_mail = models.EmailField(max_length=255, null=False, unique=True, error_messages={"unique": "Email already registered. Log in instead."})
     DOB = models.DateField(null=False)
-    password_hash = models.CharField(max_length=255, null=False, default="")
-    date_of_creation = models.DateField(auto_now_add=True, null=False)
-    account_image = models.ImageField(upload_to="accounts/")
+    profile_image = models.ImageField(upload_to="Profiles/")
 
     def delete(self, *args, **kwargs):
-        if self.account_image:
-            self.account_image.delete(save=False)
+        if self.profile_image:
+            self.profile_image.delete(save=False)
         super().delete(*args, **kwargs)
 
     def __str__(self):
         try:
-            account_image = self.account_image.file
+            profile_image = self.profile_image.file
         except ValueError:
-            account_image = "None"
-        
-        # password masking
-        visible = 15
-        masked = self.password_hash[:visible] + "*" * (len(self.password_hash) - visible)
-        return f"{self.account_ID} | {self.account_name} | {self.e_mail} | {self.DOB} | {self.date_of_creation} | {account_image} | {masked}"
-    
+            profile_image = "None"
+        return f"{self.user} | {self.account_name} | {self.DOB} | {profile_image}"
+
 class Artist(models.Model):
     artist_ID = models.AutoField(primary_key=True)
     artist_name = models.CharField(max_length=255, null=False)
@@ -55,7 +45,7 @@ class Publisher(models.Model):
 class Playlist(models.Model):
     playlist_ID = models.AutoField(primary_key=True)
     playlist_name = models.CharField(max_length=255, null=False)
-    owner_account_ID = models.ForeignKey(Account, on_delete=models.CASCADE, null=False)
+    owner_account_ID = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False)
     playlist_image = models.ImageField(upload_to="playlist/")
 
     def delete(self, *args, **kwargs):
@@ -117,7 +107,7 @@ class PlaylistTrack(models.Model):
     playlist_ID = models.ForeignKey(Playlist, on_delete=models.CASCADE, null=False)
     spotify_URL = models.ForeignKey(Track, on_delete=models.CASCADE, null=False)
     position = models.PositiveIntegerField(null=False)
-    added_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    added_by = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     added_at = models.DateTimeField(auto_now_add=True, null=False)
 
     class Meta:

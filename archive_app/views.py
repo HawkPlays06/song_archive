@@ -9,12 +9,12 @@ def home_view(request):
 
 def sign_up_view(request):
     if request.method == "POST":
-        form = forms.AccountForm(request.POST)
+        form = forms.Signup_form(request.POST)
         if form.is_valid():
             form.save()
             return redirect("home")
     else:
-        form = forms.AccountForm()
+        form = forms.Signup_form()
     
     context = {"form" : form}
     return render(request, "song_archive/sign up.html", context)

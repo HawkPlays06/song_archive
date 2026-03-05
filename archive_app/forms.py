@@ -1,21 +1,30 @@
 from django import forms
+from django.contrib.auth.models import User
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 from . import models
 
-class AccountForm(forms.ModelForm):
+# place holders needed
+class Signup_form(forms.ModelForm):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder": "E-mail address"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder" : "Password"}), label="Password")
+
+    account_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={"placeholder": "Username"}))
+    DOB = forms.DateField(widget=forms.DateInput(attrs={"type" : "date"}))
+
     class Meta:
-        model = models.Account
-        fields = ["account_name", "e_mail", "DOB", "password_hash"]
-        widgets = {
-            "account_name" : forms.TextInput(attrs={"placeholder": "Username"}),
-            "e_mail" : forms.EmailInput(attrs={"placeholder": "E-mail address"}),
-            "DOB": forms.DateInput(attrs={"type": "date"}),
-            "password_hash" : forms.PasswordInput(attrs={"placeholder" : "Password"})
-        }
+        model = User
+        fields = ("email",)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Email already registered. Log in instead.")
+        return email
     
     def clean_DOB(self):
-        dob = self.cleaned_data.get("DOB")
+        dob = self.cleaned_data["DOB"]
         if dob:
             if dob > date.today():
                 raise forms.ValidationError("That date is in the future.")
@@ -24,9 +33,21 @@ class AccountForm(forms.ModelForm):
         
         return dob
     
-    def clean_password_hash(self):
-        password = self.cleaned_data.get("password_hash")
-        return models.hash_password(password)
+    def save(self, commit=True):
+        name = self.cleaned_data["account_name"]
+        email = self.cleaned_data["email"].strip().lower()
+        password = self.cleaned_data["password"]
+
+        user = User(email=email, username=name)
+        user.set_password(password)
+
+        if commit:
+            user.save()
+            models.Profile.objects.create(user=user, 
+                                          account_name=self.cleaned_data["account_name"],
+                                          DOB = self.cleaned_data["DOB"]
+                                          )
+        return user
 """
 class ArtistForm(forms.ModelForm):
     class Meta:
