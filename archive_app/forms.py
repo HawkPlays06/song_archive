@@ -22,7 +22,7 @@ class Signup_form(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
         if User.objects.filter(email=email).exists():
-            login_url = reverse("log in")  # your login url name
+            login_url = reverse("log in")
             raise ValidationError(
             format_html(
                 'Email already registered. <a href="{}">Log in </a> instead.',
@@ -66,45 +66,5 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Password"})
     )
 
-"""
-class ArtistForm(forms.ModelForm):
-    class Meta:
-        model = models.Artist
-        fields = [""]
-        widgets = {
-
-        }
-
-class PublisherForm(forms.ModelForm):
-    class Meta:
-        model = models.Publisher
-        fields = [""]
-        widgets = {
-
-        }
-
-class PlaylistForm(forms.ModelForm):
-    class Meta:
-        model = models.Playlist
-        fields = [""]
-        widgets = {
-
-        }
-
-class AlbumForm(forms.ModelForm):
-    class Meta:
-        model = models.Album
-        fields = [""]
-        widgets = {
-
-        }
-
-class TrackForm(forms.ModelForm):
-    class Meta:
-        model = models.Track
-        fields = [""]
-        widgets = {
-
-        }
-
-"""
+class EmailChange(forms.Form):
+    email = forms.EmailField(label="New email")

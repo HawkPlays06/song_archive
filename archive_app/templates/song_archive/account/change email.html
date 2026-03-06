@@ -1,0 +1,22 @@
+{% extends 'song_archive/base.html' %}
+
+{% block title %}Change email{% endblock %}
+
+{% block content %}
+<head>
+    <title>Change email</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/change email.css' %}">
+</head>
+<body>
+    <h1>Change email</h1>
+    <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{form.email}}
+
+        <button type="submit">CHANGE E-MAIL</button>
+    </form>
+</body>
+
+{% endblock %}

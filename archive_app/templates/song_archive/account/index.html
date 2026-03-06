@@ -1,0 +1,34 @@
+{% extends 'song_archive/base.html' %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+<head>
+    <title>Account</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+</head>
+<body>
+    <h1>Hello {{ user.username }}!</h1>
+
+    <div class="account-container">
+        <div class="information-label">E-mail:</div>
+        <div class="information"> {{ user.email }}</div>
+
+        <div class="information-label">date joined:</div>
+        <div class="information"> {{user.date_joined }}</div>
+
+        <div class="button-row">
+            <form action="{% url 'change email' %}">
+                <input class="email-button" type="submit" value="Change e-mail?"/>
+            </form>
+
+            <form action="{% url 'change password' %}">
+                <input class="password-button" type="submit" value="Change password?"/>
+            </form>
+        </div>
+        
+    </div>
+</body>
+
+{% endblock %}

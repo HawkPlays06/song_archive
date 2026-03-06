@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-import bcrypt
-
     
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -41,20 +39,6 @@ class Publisher(models.Model):
 
     def __str__(self):
             return f""
-
-class Playlist(models.Model):
-    playlist_ID = models.AutoField(primary_key=True)
-    playlist_name = models.CharField(max_length=255, null=False)
-    owner_account_ID = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False)
-    playlist_image = models.ImageField(upload_to="playlist/")
-
-    def delete(self, *args, **kwargs):
-        if self.playlist_image:
-            self.playlist_image.delete(save=False)
-        super().delete(*args, **kwargs)
-
-    def __str__(self):
-        return f""
 
 class Album(models.Model):
     album_ID = models.AutoField(primary_key=True)
@@ -98,21 +82,6 @@ class TrackArtist(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=["spotify_URL", "artist_ID"], name="track_artist_PK")
-        ]
-
-    def __str__(self):
-        return f""
-
-class PlaylistTrack(models.Model):
-    playlist_ID = models.ForeignKey(Playlist, on_delete=models.CASCADE, null=False)
-    spotify_URL = models.ForeignKey(Track, on_delete=models.CASCADE, null=False)
-    position = models.PositiveIntegerField(null=False)
-    added_by = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
-    added_at = models.DateTimeField(auto_now_add=True, null=False)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["playlist_ID", "spotify_URL"], name="playlist_track_PK")
         ]
 
     def __str__(self):
