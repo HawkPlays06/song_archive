@@ -55,4 +55,4 @@ def change_password_view(request):
     else:
         form = forms.PasswordChange()
 
-    return render(request, "song_archive/account/change email.html", {"form": form})
+    return render(request, "song_archive/account/change password.html", {"form": form})

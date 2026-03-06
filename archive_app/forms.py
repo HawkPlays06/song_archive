@@ -68,3 +68,8 @@ class LoginForm(AuthenticationForm):
 
 class EmailChange(forms.Form):
     email = forms.EmailField(label="New email")
+
+class PasswordChange(forms.Form):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "New password"})
+    )
