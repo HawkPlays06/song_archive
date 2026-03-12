@@ -33,17 +33,9 @@ class Artist(models.Model):
     def __str__(self):
         return f""
 
-class Publisher(models.Model):
-    publisher_ID = models.AutoField(primary_key=True)
-    publisher_name = models.CharField(max_length=255, null=False)
-
-    def __str__(self):
-            return f""
-
 class Album(models.Model):
     album_ID = models.AutoField(primary_key=True)
     artist_ID = models.ForeignKey(Artist, on_delete=models.CASCADE, null=False)
-    publisher_ID = models.ForeignKey(Publisher, on_delete=models.CASCADE, null=False)
     title = models.CharField(max_length=255, null=False)
     release_date = models.DateField(null=False)
     album_image = models.ImageField(upload_to="album/", null=False)
