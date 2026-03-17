@@ -9,4 +9,18 @@
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <h1>Home</h1>
+
+<body>
+    <h2>Artists</h2>
+
+    <div class="artist-card-container">
+        {% for artist in artists %}
+            <div class="artist-card">
+                <p>{{artist.artist_name}}</p>
+                </div>
+        {% endfor %}
+    </div>
+
+</body>
+
 {% endblock %}

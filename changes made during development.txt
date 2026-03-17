@@ -1,1 +1,0 @@
-changed artist primary key to a user instead of ID to allow signing up and logging into a artist account

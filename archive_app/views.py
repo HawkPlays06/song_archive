@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from . import forms
 from . import models
 
 def home_view(request):
-    return render(request, "song_archive/home.html")
+
+    artists = models.Artist.objects.all()
+
+    return render(request, "song_archive/home.html", {"artists":artists})
 
 # region account views
 
@@ -23,7 +26,7 @@ def account_sign_up_view(request):
             user = User.objects.create_user(
                 username = account_name,
                 password = password,
-                email = email
+                email = email,
             )
 
             models.Profile.objects.create(
@@ -101,7 +104,7 @@ def artist_sign_up_view(request):
             user = User.objects.create_user(
                 username = artist_name,
                 password = password,
-                email = email
+                email = email,
             )
 
             models.Artist.objects.create(
