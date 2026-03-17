@@ -1,0 +1,20 @@
+{% extends 'song_archive/base.html' %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+<head>
+    <title>Account</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+</head>
+<body>
+    <h1>Hello {{ user.username }}!</h1>
+
+    <div class="account-container">
+        
+        
+    </div>
+</body>
+
+{% endblock %}

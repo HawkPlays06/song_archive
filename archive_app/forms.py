@@ -8,7 +8,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from . import models
 
-class Signup_form(forms.ModelForm):
+class Account_signup_form(forms.ModelForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder": "E-mail address"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder" : "Password"}), label="Password")
 
@@ -41,23 +41,7 @@ class Signup_form(forms.ModelForm):
         
         return dob
     
-    def save(self, commit=True):
-        name = self.cleaned_data["account_name"]
-        email = self.cleaned_data["email"].strip().lower()
-        password = self.cleaned_data["password"]
-
-        user = User(email=email, username=name)
-        user.set_password(password)
-
-        if commit:
-            user.save()
-            models.Profile.objects.create(user=user, 
-                                          account_name=self.cleaned_data["account_name"],
-                                          DOB = self.cleaned_data["DOB"]
-                                          )
-        return user
-
-class LoginForm(AuthenticationForm):
+class Account_login_form(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "Username"})
     )
@@ -66,10 +50,32 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Password"})
     )
 
-class EmailChange(forms.Form):
+class Email_change_form(forms.Form):
     email = forms.EmailField(label="New email")
 
-class PasswordChange(forms.Form):
+class Password_change_form(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "New password"})
     )
+
+class Artist_signup_form(forms.ModelForm):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder": "E-mail address"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder" : "Password"}), label="Password")
+
+    artist_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={"placeholder": "Artist Name"}))
+
+    class Meta:
+        model = User
+        fields = ("email",)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if User.objects.filter(email=email).exists():
+            login_url = reverse("log in")
+            raise ValidationError(
+            format_html(
+                'Email already registered. <a href="{}">Log in </a> instead.',
+                login_url
+            )
+        )
+        return email

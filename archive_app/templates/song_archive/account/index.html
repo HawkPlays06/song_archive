@@ -26,9 +26,46 @@
             <form action="{% url 'change password' %}">
                 <input class="password-button" type="submit" value="Change password"/>
             </form>
+
+            <form action="{% url 'log out' %}" method="post">
+                {% csrf_token %}
+                <button class="signout-button" type="submit">Sign Out</button>
+            </form>
+
+            <form id="delete-account-form" action="{% url 'delete account' %}" method="post">
+                
+                {% csrf_token %}
+                <button type="button" class="delete-button btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal"> Delete Account</button>
+            </form>
         </div>
         
     </div>
+
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You are attempting to delete your account. Please confirm this.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
+
+<script>
+    document.getElementById("confirm-delete-btn").addEventListener("click", function () {
+        document.getElementById("delete-account-form").submit();
+    });
+</script>
 
 {% endblock %}

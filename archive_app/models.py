@@ -9,9 +9,11 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to="Profiles/")
 
     def delete(self, *args, **kwargs):
+        user = self.user
         if self.profile_image:
             self.profile_image.delete(save=False)
         super().delete(*args, **kwargs)
+        user.delete()
 
     def __str__(self):
         try:
@@ -21,7 +23,7 @@ class Profile(models.Model):
         return f"{self.user} | {self.account_name} | {self.DOB} | {profile_image}"
 
 class Artist(models.Model):
-    artist_ID = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     artist_name = models.CharField(max_length=255, null=False)
     artist_image = models.ImageField(upload_to="artist/")
 
@@ -31,7 +33,11 @@ class Artist(models.Model):
         super().delete(*args, **kwargs)
 
     def __str__(self):
-        return f""
+        try:
+            artist_image = self.artist_image.file
+        except ValueError:
+            artist_image = "None"
+        return f"{self.user} | {self.artist_name} | {artist_image}"
 
 class Album(models.Model):
     album_ID = models.AutoField(primary_key=True)

@@ -17,6 +17,12 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
+            {% if form.non_field_errors %}
+            <div class="error">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
             <label for="e_mail">Username: <span class="required">*</span></label>
             {{ form.username }}
             {{ form.username.errors }}
@@ -27,7 +33,7 @@
 
             <button type="submit">LOG IN</button>
 
-            <div class="signup-redirect">Don't have an account? Sign up <a href="{% url 'sign up' %}">here</a>.</div>
+            <div class="signup-redirect">Don't have an account? Sign up <a href="{% url 'account sign up' %}">here</a>.</div>
         </form>
     </div>
 </body>

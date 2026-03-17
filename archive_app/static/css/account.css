@@ -24,8 +24,9 @@ h1 {
     box-sizing: border-box;
 }
 
-.email-button, .password-button {
-    background-color: #4E3E5B;
+.email-button, 
+.password-button,
+.signout-button {
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -33,11 +34,22 @@ h1 {
     outline: none;
     box-shadow: none;
     appearance: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.email-button, 
+.password-button{
+    background-color: #4E3E5B;
+}
+
+.signout-button {
+    background-color: #A55;
 }
 
 .button-row {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     width: 80%;
     margin-top: 10px;
 }

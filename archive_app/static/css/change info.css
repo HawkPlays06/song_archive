@@ -3,7 +3,9 @@ h1 {
 }
 
 .change-container {
-    width: 600px;
+
+    text-align: center;
+    width: 800px;
     margin: 50px auto 0;
     background-color: #3A3A3A;
     
@@ -19,6 +21,13 @@ h1 {
     appearance: none;
 
     height: 40px;
+}
+
+.change-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
 }
 
 button {

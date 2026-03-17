@@ -77,7 +77,9 @@ label {
     padding: 10px;
 }
 
-.login-redirect{
+.login-redirect,
+.artist-redirect,
+.account-redirect{
     text-align: center;
     color: white;
 }

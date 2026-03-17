@@ -1,0 +1,38 @@
+{% extends 'song_archive/base.html' %}
+
+{% block title %}Artist Sign up{% endblock %}
+
+{% block content %}
+<head>
+    <title>Artist Sign up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/sign up.css' %}">
+</head>
+<body>
+    <div class="signup-container">
+        <h1>Artist Sign up</h1>
+        <div class="required-information">
+            <span class="required">*</span> indicates required fields
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="artist_name">Artist Name:  <span class="required">*</span></label>
+            {{ form.artist_name }}
+
+            <label for="email">E-mail: <span class="required">*</span></label>
+            {{ form.email }}
+            {{ form.email.errors}}
+
+            <label for="password">Password: <span class="required">*</span></label>
+            {{ form.password }}
+
+            <button type="submit">SIGN UP</button>
+
+            <div class="login-redirect">Already have an artist account? Log in <a href="{% url 'account log in' %}">here</a>.</div>
+            <div class="account-redirect">Not an artist but looking to sign up? <a href="{% url 'account sign up' %}">here</a>.</div>
+        </form>
+    </div>
+</body>
+
+{% endblock %}
