@@ -22,7 +22,7 @@ class Account_signup_form(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
         if User.objects.filter(email=email).exists():
-            login_url = reverse("log in")
+            login_url = reverse("account log in")
             raise ValidationError(
             format_html(
                 'Email already registered. <a href="{}">Log in </a> instead.',
