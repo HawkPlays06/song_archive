@@ -6,7 +6,9 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.html import format_html
 from django.urls import reverse
-from . import models
+
+
+# Form for signing a non-artist account up
 
 class Account_signup_form(forms.ModelForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder": "E-mail address"}))
@@ -19,6 +21,8 @@ class Account_signup_form(forms.ModelForm):
         model = User
         fields = ("email",)
 
+    # checks to see if email already exists within the db
+    # if it does, don't allow it to be added 
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
         if User.objects.filter(email=email).exists():
@@ -31,6 +35,7 @@ class Account_signup_form(forms.ModelForm):
         )
         return email
     
+    # checks to see if the user is above 13 and that the date is not in the future
     def clean_DOB(self):
         dob = self.cleaned_data["DOB"]
         if dob:
@@ -41,6 +46,8 @@ class Account_signup_form(forms.ModelForm):
         
         return dob
     
+# adds custom widgets with placeholders to teh AuthenticationForm class
+# which is used for the in-built User system in Django
 class Account_login_form(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "Username"})
@@ -50,14 +57,17 @@ class Account_login_form(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Password"})
     )
 
+# form for changing email
 class Email_change_form(forms.Form):
     email = forms.EmailField(label="New email")
 
+# form for changing password
 class Password_change_form(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "New password"})
     )
 
+# similar to account sign up, but for artists, doesn't require a DOB
 class Artist_signup_form(forms.ModelForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder": "E-mail address"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder" : "Password"}), label="Password")
